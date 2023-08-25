@@ -4,6 +4,7 @@ import 'package:ecommerce/views/shared/bottomNav.dart';
 import 'package:ecommerce/views/shared/bottomNavWidget.dart';
 import 'package:ecommerce/views/ui/cartPage.dart';
 import 'package:ecommerce/views/ui/homePage.dart';
+import 'package:ecommerce/views/ui/productByCard.dart';
 import 'package:ecommerce/views/ui/profile.dart';
 import 'package:ecommerce/views/ui/searchPage.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class MainScreen extends StatelessWidget {
   List<Widget> pageList = [
     HomePage(),
     SearchPage(),
-    HomePage(),
+    ProductByCard(),
     CartPage(),
     Profile(),
   ];

@@ -48,7 +48,7 @@ class _ProductCardState extends State<ProductCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.28,
+                        height: MediaQuery.of(context).size.height * 0.25,
                         width: MediaQuery.of(context).size.height * 0.4,
                         decoration: BoxDecoration(
                           image: DecorationImage(
@@ -64,12 +64,12 @@ class _ProductCardState extends State<ProductCard> {
                             Text(
                               widget.name,
                               style: appStyleWithHt(
-                                  36, Colors.black, FontWeight.bold, 1.1),
+                                  30, Colors.black, FontWeight.bold, 1.1),
                             ),
                             Text(
                               widget.category,
                               style: appStyleWithHt(
-                                  18, Colors.grey, FontWeight.bold, 1.5),
+                                  16, Colors.grey, FontWeight.bold, 1.5),
                             ),
                           ],
                         ),
@@ -82,7 +82,7 @@ class _ProductCardState extends State<ProductCard> {
                             Text(
                               widget.price,
                               style:
-                                  appStyle(30, Colors.black, FontWeight.w600),
+                                  appStyle(24, Colors.black, FontWeight.w600),
                             ),
                             Row(
                               children: [
@@ -92,13 +92,14 @@ class _ProductCardState extends State<ProductCard> {
                                       18, Colors.grey, FontWeight.w500),
                                 ),
                                 const SizedBox(
-                                  width: 5,
+                                  width: 2,
                                 ),
                                 ChoiceChip(
-                                  label: const Text(' '),
+                                  label: const Text(''),
                                   selected: selected,
                                   visualDensity: VisualDensity.compact,
                                   selectedColor: Colors.black,
+                                  shape: CircleBorder(),
                                 ),
                               ],
                             )
