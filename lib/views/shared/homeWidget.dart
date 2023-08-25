@@ -1,3 +1,4 @@
+import 'package:ecommerce/views/ui/productByCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
@@ -10,9 +11,11 @@ class HomeWidget extends StatelessWidget {
   const HomeWidget({
     super.key,
     required Future<List<Sneakers>> male,
+    required this.tabIndex,
   }) : _male = male;
 
   final Future<List<Sneakers>> _male;
+  final int tabIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +61,27 @@ class HomeWidget extends StatelessWidget {
                     "Latest Shoes",
                     style: appStyle(24, Colors.black, FontWeight.bold),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        'Show All',
-                        style: appStyle(22, Colors.black, FontWeight.w500),
-                      ),
-                      const Icon(
-                        AntDesign.caretright,
-                        size: 20,
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductByCard(
+                                    tabIndex: tabIndex,
+                                  )));
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'Show All',
+                          style: appStyle(22, Colors.black, FontWeight.w500),
+                        ),
+                        const Icon(
+                          AntDesign.caretright,
+                          size: 20,
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

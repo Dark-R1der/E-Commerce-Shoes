@@ -78,6 +78,10 @@ flutter:
     - assets/json/kids_shoes.json
     - assets/json/men_shoes.json
     - assets/json/women_shoes.json
+    - assets/images/jordan.png
+    - assets/images/gucci.png
+    - assets/images/adidas.png
+    - assets/images/nike.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
