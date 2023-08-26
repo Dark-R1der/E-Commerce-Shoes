@@ -1,4 +1,6 @@
+import 'package:ecommerce/controllers/productProvider.dart';
 import 'package:ecommerce/views/ui/productByCard.dart';
+import 'package:ecommerce/views/ui/productPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
@@ -6,6 +8,7 @@ import 'package:ecommerce/models/sneakersModel.dart';
 import 'package:ecommerce/views/shared/appStyle.dart';
 import 'package:ecommerce/views/shared/newShoes.dart';
 import 'package:ecommerce/views/shared/product_card.dart';
+import 'package:provider/provider.dart';
 
 class HomeWidget extends StatelessWidget {
   const HomeWidget({
@@ -19,6 +22,8 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var productNotifier = Provider.of<ProductNotifier>(context);
+
     return Column(
       children: [
         SizedBox(
@@ -37,12 +42,25 @@ class HomeWidget extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     final shoe = snapshot.data![index];
-                    return ProductCard(
-                      price: "\$${shoe.price}",
-                      category: shoe.category,
-                      id: shoe.id,
-                      name: shoe.name,
-                      image: shoe.imageUrl[0],
+                    return GestureDetector(
+                      onTap: () {
+                        productNotifier.shoeSize = shoe.sizes;
+                        print(productNotifier.shoeSize);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductPage(
+                                id: shoe.id, category: shoe.category),
+                          ),
+                        );
+                      },
+                      child: ProductCard(
+                        price: "\$${shoe.price}",
+                        category: shoe.category,
+                        id: shoe.id,
+                        name: shoe.name,
+                        image: shoe.imageUrl[0],
+                      ),
                     );
                   },
                 );

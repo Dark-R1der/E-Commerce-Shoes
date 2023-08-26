@@ -1,4 +1,5 @@
 import 'package:ecommerce/controllers/mainScreenProvider.dart';
+import 'package:ecommerce/controllers/productProvider.dart';
 import 'package:ecommerce/views/ui/mainScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => MainScreenNotifer())
+        ChangeNotifierProvider(create: (context) => MainScreenNotifer()),
+        ChangeNotifierProvider(create: (context) => ProductNotifier())
       ],
       child: MyApp(),
     ),
