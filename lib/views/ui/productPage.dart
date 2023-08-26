@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce/controllers/favoriteProvider.dart';
 import 'package:ecommerce/controllers/productProvider.dart';
+import 'package:ecommerce/models/constants.dart';
 import 'package:ecommerce/models/sneakersModel.dart';
 import 'package:ecommerce/service/helper.dart';
 import 'package:ecommerce/views/shared/appStyle.dart';
 import 'package:ecommerce/views/shared/checkOutBtn.dart';
+import 'package:ecommerce/views/ui/favorite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
@@ -19,6 +23,8 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  final _cartBox = Hive.box('cart_box');
+  final _favBox = Hive.box('fav_box');
   final PageController _pageController = PageController();
   late Future<Sneakers> _sneaker;
 
@@ -30,6 +36,28 @@ class _ProductPageState extends State<ProductPage> {
     } else {
       _sneaker = Helper().getKidSneakersById(widget.id);
     }
+  }
+
+  Future<void> _createCart(Map<String, dynamic> newCart) async {
+    await _cartBox.add(newCart);
+  }
+
+  Future<void> _createfav(Map<String, dynamic> addFav) async {
+    await _favBox.add(addFav);
+    getFavorite();
+  }
+
+  getFavorite() {
+    final favData = _favBox.keys.map((key) {
+      final item = _favBox.get(key);
+      return {
+        "key": key,
+        "id": item['id'],
+      };
+    }).toList();
+    favor = favData.toList();
+    ids = favor.map((item) => item['id']).toList();
+    setState(() {});
   }
 
   @override
@@ -117,15 +145,40 @@ class _ProductPageState extends State<ProductPage> {
                                         ),
                                       ),
                                       Positioned(
-                                        top:
-                                            MediaQuery.of(context).size.height *
-                                                0.1,
-                                        right: 20,
-                                        child: Icon(
-                                          AntDesign.hearto,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
+                                          top: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.1,
+                                          right: 20,
+                                          child: Consumer<FavoritesNotifier>(
+                                            builder: (context,
+                                                favoritesNotifier, child) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  if (ids.contains(widget.id)) {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                Favorite()));
+                                                  } else {
+                                                    _createfav({
+                                                      "id": sneaker.id,
+                                                      "name": sneaker.name,
+                                                      "category":
+                                                          sneaker.category,
+                                                      "price": sneaker.price,
+                                                      "imageUrl":
+                                                          sneaker.imageUrl[0],
+                                                    });
+                                                  }
+                                                },
+                                                child: ids.contains(sneaker.id)
+                                                    ? Icon(AntDesign.heart)
+                                                    : Icon(AntDesign.hearto),
+                                              );
+                                            },
+                                          )),
                                       Positioned(
                                         bottom: 0,
                                         right: 0,
@@ -317,6 +370,20 @@ class _ProductPageState extends State<ProductPage> {
                                                       selected:
                                                           sizes["isSelected"],
                                                       onSelected: (newState) {
+                                                        if (productNotifier
+                                                            .sizes
+                                                            .contains(sizes[
+                                                                'size'])) {
+                                                          productNotifier.sizes
+                                                              .remove(sizes[
+                                                                  'size']);
+                                                        } else {
+                                                          productNotifier.sizes
+                                                              .add(sizes[
+                                                                  'size']);
+                                                        }
+                                                        print(productNotifier
+                                                            .sizes);
                                                         productNotifier
                                                             .toggleCheck(index);
                                                       },
@@ -363,13 +430,28 @@ class _ProductPageState extends State<ProductPage> {
                                         //   height: ,
                                         // ),
                                         Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(top: 12),
-                                              child: CheckOutButton(
-                                                  label: "Add to Cart",
-                                                  onTap: () {}),
-                                            ))
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(top: 12),
+                                            child: CheckOutButton(
+                                              label: "Add to Cart",
+                                              onTap: () async {
+                                                _createCart({
+                                                  "id": sneaker.id,
+                                                  "name": sneaker.name,
+                                                  "category": sneaker.category,
+                                                  "size": productNotifier.sizes,
+                                                  "imageUrl":
+                                                      sneaker.imageUrl[0],
+                                                  "price": sneaker.price,
+                                                  "qty": 1,
+                                                });
+                                                productNotifier.sizes.clear();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),

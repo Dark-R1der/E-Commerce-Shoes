@@ -2,7 +2,9 @@ import 'package:ecommerce/controllers/mainScreenProvider.dart';
 import 'package:ecommerce/views/shared/appStyle.dart';
 import 'package:ecommerce/views/shared/bottomNav.dart';
 import 'package:ecommerce/views/shared/bottomNavWidget.dart';
+import 'package:ecommerce/views/ui/cart.dart';
 import 'package:ecommerce/views/ui/cartPage.dart';
+import 'package:ecommerce/views/ui/favorite.dart';
 import 'package:ecommerce/views/ui/homePage.dart';
 import 'package:ecommerce/views/ui/productByCard.dart';
 import 'package:ecommerce/views/ui/profile.dart';
@@ -16,8 +18,8 @@ class MainScreen extends StatelessWidget {
   List<Widget> pageList = [
     HomePage(),
     SearchPage(),
-    HomePage(),
-    CartPage(),
+    Favorite(),
+    CartPageProduct(),
     Profile(),
   ];
 
